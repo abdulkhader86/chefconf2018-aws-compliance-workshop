@@ -1,0 +1,21 @@
+ssh_public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC5OdF2DLrhxNySubo5YjXSnwSbNFTJpXx+ITLQIVrJWlYc8XCNhZD5NBGJciUBw61MjVNAZB0eHPhhaglfuDb9ThIrPUOS/zcEiVEkNNY5C1N2ym5XFaD30GG+jrDWd5gH7qglGlMheJCqiPeKRciRpPNDrQHM3RRwPLc2tZXa0M8zlGZWQbJ5zHR1qxB1lWY1Tt0f8dYCBpHuSWHYEAso2P3RbHs6BrjvY9B7H6NwtaV4qe3YacVzBcu3M98YCEJ4+xWLbNnVogB+Q0ejwMnzbt7dLbbkt5pDmp/3ixVRCRbF3a+3cG3ixhmO3c7vusEOaK4BJgPysiMkcOHTnxqR jerry@chef.io"
+ssh_private_key_path = "~/.ssh/id_rsa"
+
+aws_profile = "chefconf-aws-workshop"
+automate_admin_password = "YOUR_ADMIN_PASSWORD"
+automate_channel = "dev"
+automate_license = "YOUR_LICENSE_TEXT_HERE"
+aws_tag_x_contact = "YOUR_EMAIL"
+
+lab_prefix = "chefconf2018"
+
+workstation_username = "chefconf2018"
+workstation_password = "chefconf2018!"
+
+chef_admin_username = "admin"
+chef_admin_password = "chefconf2018!"
+
+participants = [
+  "johnsmith",
+  "janedoe"
+]

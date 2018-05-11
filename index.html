@@ -1,0 +1,369 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <title>reveal.js</title>
+
+    <link rel="stylesheet" href="css/reveal.css">
+    <link rel="stylesheet" href="css/theme/chefconf-2018.css">
+
+    <!-- Theme used for syntax highlighting of code -->
+    <link rel="stylesheet" href="lib/css/zenburn.css">
+
+    <!-- Printing and PDF exports -->
+    <script>
+      var link = document.createElement( 'link' );
+      link.rel = 'stylesheet';
+      link.type = 'text/css';
+      link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+      document.getElementsByTagName( 'head' )[0].appendChild( link );
+    </script>
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides">
+        <section data-background-image="img/chefconf-2018-intro.png" data-background-size="contain"></section>
+
+        <section data-background-image="img/chefconf-2018-background.png" data-background-size="contain">
+          <section>
+            <h1>Chef Automate 2 Intro</h1>
+          </section>
+        </section>
+
+        <!-- DETECT Section -->
+        <section data-background-image="img/chefconf-2018-background.png" data-background-size="contain">
+          <section data-transition="slide">
+            <h1>DETECT</h1>
+          </section>
+
+          <section class="two-column-with-title">
+            <div id="title">
+              <h2>Automate Cloud Integrations</h2>
+            </div>
+            <div id="left">
+              <a href="https://aws.amazon.com/"><img alt="AWS Logo" data-src="img/aws_logo.png"/></a>
+            </div>
+            <div id="right">
+              <a href="https://azure.microsoft.com"><img alt="Azure Logo" src="img/azure_logo.png"/></a>
+            </div>
+          </section>
+
+          <section align="left">
+            <h2>Node Managers</h2>
+              <p class="fragment">API Node Manager</p>
+              <ul>
+                <li class="fragment">Platform level scanning</li>
+                <li class="fragment">Automatic region importing</li>
+              </ul>
+              <p class="fragment">EC2 Node Manger</p>
+              <ul>
+                <li class="fragment">Instance/OS level scanning</li>
+                <li class="fragment">Automatic node importing</li>
+              </ul>
+            <aside class="notes">
+              Talk about differences between API/EC2 node managers
+            </aside>
+          </section>
+
+          <section>
+            <h1>API NODE MANAGER DEMO!!!</h1>
+            <aside class="notes">
+              Demo adding API node manger and scanning with CIS AWS profile
+            </aside>
+          </section>
+
+          <section>
+            <p>Scanning an AWS region</p>
+            <ol style="text-align: left">
+              <li>Add the node manager</li>
+              <li>Download CIS AWS InSpec profile</li>
+              <li>Add a Scan Job</li>
+            </ol>
+          </section>
+
+          <section>
+            <h1>EC2 NODE MANAGER DEMO!!!</h1>
+            <aside class="notes">
+              Demo adding EC2 node manger and scanning with dev-sec/ssh-baseline
+            </aside>
+          </section>
+
+          <section>
+            <p>Scanning an EC2 instance</p>
+            <ol style="text-align: left">
+              <li>Add the node manager</li>
+              <li>Download the DevSec SSH Baseline profile</li>
+              <li>Add a Scan Job</li>
+            </ol>
+          </section>
+
+          <section>
+            <h1>How can I correct these findings!?!</h1>
+            <p class="fragment">...with Chef!!!</p>
+          </section>
+
+          <section>
+            <h2>Connecting to your Workstation</h2>
+            <p>(See Workshop Info: SSH Login Command)</p>
+          </section>
+
+          <section class="two-column-with-title">
+            <h2>Writing a Simple Wrapper Profile</h2>
+            <p class="fragment">1. Create your profile:</p>
+            <pre class="fragment"><code data-trim data-noescape>
+              inspec init profile mycorp_ssh_baseline
+              cd mycorp_ssh_baseline
+            </code></pre>
+          </section>
+
+          <section>
+            <p style="text-align: left">2. Edit your inspec.yml file</p>
+            <pre class="fragment"><code data-trim data-noescape>
+              vim inspec.yml
+            </code></pre>
+            <p class="fragment" style="text-align: left">...by adding the below:</p>
+            <pre class="fragment"><code data-trim data-noescape style="font-size: .96em">
+              depends:
+                - name: ssh-baseline
+                  url: https://github.com/dev-sec/ssh-baseline/archive/master.tar.gz
+            </code></pre>
+            <p class="fragment" style="text-align: left">...and changing the title to match the following:</p>
+            <pre class="fragment"><code data-trim data-noescape style="font-size: .96em">
+              title: MyCorp SSH Baseline
+            </code></pre>
+          </section>
+
+          <section>
+            <p style="text-align: left">3. Edit your controls/example.rb to include external controls </p>
+            <pre class="fragment"><code data-trim data-noescape>
+              vim controls/example.rb
+            </code></pre>
+            <p class="fragment" style="text-align: left">...by adding the below (remove all other lines):</p>
+            <pre class="fragment"><code data-trim data-noescape class="ruby">
+              # encoding: utf-8
+
+              include_controls 'ssh-baseline' do
+                skip_control 'sshd-27'
+                skip_control 'sshd-29'
+                skip_control 'sshd-46'
+              end
+            </code></pre>
+          </section>
+
+          <section>
+            <p style="text-align: left">4. Add a PasswordAuthentication control </p>
+            <pre><code data-trim data-noescape class="ruby">
+              control 'mycorp-sshd-27' do
+                impact 1.0
+                title 'Server: Enable password based authentication'
+                describe sshd_config do
+                  its('PasswordAuthentication') { should eq 'yes' }
+                end
+              end
+            </code></pre>
+          </section>
+
+          <section>
+            <p style="text-align: left">5. Add a ChallengeResponseAuthentication control</p>
+            <pre><code data-trim data-noescape class="ruby">
+              control 'mycorp-sshd-29' do
+                impact 1.0
+                title 'Server: Enable ChallengeResponseAuthentication'
+                describe sshd_config do
+                  its('ChallengeResponseAuthentication') { should eq 'yes' }
+                end
+              end
+            </code></pre>
+          </section>
+
+          <section>
+            <p style="text-align: left">6. Add a Banner control</p>
+            <pre><code data-trim data-noescape class="ruby">
+              control 'mycorp-sshd-46' do
+                impact 1.0
+                title 'Server: Set Banner'
+                describe sshd_config do
+                  its('Banner') { should eq '/etc/issue.net'  }
+                end
+              end
+            </code></pre>
+          </section>
+
+          <section>
+            <p style="text-align: left">7. Add a control to check Banner contents</p>
+            <pre><code data-trim data-noescape class="ruby">
+              control 'mycorp-sshd-banner-content' do
+                impact 1.0
+                title 'Server: Set Banner content'
+                describe file('/etc/issue.net') do
+                  its('content') { should match /SUPER SECURE BANNER/ }
+                end
+              end
+            </code></pre>
+          </section>
+
+          <section>
+            <p style="text-align: left">8. Test your whole profile locally</p>
+            <pre><code data-trim data-noescape class="ruby">
+              sudo inspec exec .
+            </code></pre>
+          </section>
+
+          <section>
+            <p style="text-align: left">9. Upload to Automate</p>
+            <p class="fragment" style="text-align: left">...by running the InSpec Login command
+            <p class="fragment">(See Workshop Info: InSpec Login Command)</p>
+            </code></pre>
+            <p class="fragment" style="text-align: left">...then the upload command</p>
+            <pre class="fragment"><code data-trim data-noescape>
+              inspec compliance upload .
+            </code></pre>
+          </section>
+
+          <section>
+            <h1>NODE SCANNING DEMO!!!</h1>
+            <aside class="notes">
+              Demo scanning a node with the newly uploaded profile
+            </aside>
+          </section>
+        </section>
+
+        <!-- CORRECT Section -->
+        <section data-background-image="img/chefconf-2018-background.png" data-background-size="contain">
+          <section>
+            <h1>CORRECT</h1>
+          </section>
+
+          <section>
+            <p class="fragment" style="text-align: left">1. Generate your SSHD wrapper cookbook</p>
+            <pre class="fragment"><code data-trim data-noescape>
+              cd ~
+              chef generate cookbook mycorp_ssh_hardening
+            </code></pre>
+          </section>
+
+          <section>
+            <p class="fragment" style="text-align: left">2. Configure your .kitchen.yml (We provided a template)</p>
+            <pre class="fragment"><code data-trim data-noescape>
+              cd mycorp_ssh_hardening
+              cp ../example_kitchen.yml .kitchen.yml
+            </code></pre>
+            <p class="fragment" style="text-align: left">...and test to make sure you can create an instance</p>
+            <pre class="fragment"><code data-trim data-noescape>
+              sudo kitchen create
+            </code></pre>
+          </section>
+
+          <section>
+            <p class="fragment" style="text-align: left">3. Configure your metadata.rb</p>
+            <pre class="fragment"><code data-trim data-noescape>
+              vim metadata.rb
+            </code></pre>
+            <p class="fragment" style="text-align: left">...by adding the following line</p>
+            <pre class="fragment"><code data-trim data-noescape class="ruby">
+              depends 'ssh-hardening'
+            </code></pre>
+          </section>
+
+          <section>
+            <p style="text-align: left">4. Write tests</p>
+            <pre class="fragment"><code data-trim data-noescape>
+              vim test/integration/default/default_test.rb
+            </code></pre>
+            <p class="fragment" style="text-align: left">...by adding the following lines (delete all other lines)</p>
+            <pre class="fragment"><code data-trim data-noescape class="ruby">
+              # encoding: utf-8
+
+              describe sshd_config do
+                its('Banner') { should eq '/etc/issue.net' }
+                its('ChallengeResponseAuthentication') { should eq 'yes' }
+                its('PasswordAuthentication') { should eq 'yes' }
+              end
+
+              describe file('/etc/issue.net') do
+                its('content') { should match /SUPER SECURE BANNER/ }
+              end
+            </code></pre>
+          </section>
+          <section>
+            <p style="text-align: left">5. Add recipe code for SSHD banner </p>
+            <pre class="fragment"><code data-trim data-noescape>
+              vim recipes/default.rb
+            </code></pre>
+            <p class="fragment" style="text-align: left">...by adding the following lines</p>
+            <pre class="fragment"><code data-trim data-noescape class="ruby">
+              file '/etc/issue.net' do
+                content 'SUPER SECURE BANNER'
+              end
+            </code></pre>
+          </section>
+
+          <section>
+            <p style="text-align: left">6. Add code from the DevSec ssh-hardening cookbook</p>
+            <p class="fragment" style="text-align: left">...by adding the following lines</p>
+            <pre class="fragment"><code data-trim data-noescape class="ruby" style="font-size: .75em">
+              node.default['ssh-hardening']['ssh']['server']['banner'] = '/etc/issue.net'
+              node.default['ssh-hardening']['ssh']['server']['challenge_response_authentication'] = true
+              node.default['ssh-hardening']['ssh']['server']['password_authentication'] = true
+
+              include_recipe 'ssh-hardening'
+            </code></pre>
+          </section>
+
+          <section>
+            <h2>Local Development!!!</h2>
+
+            <pre class="fragment"><code data-trim data-noescape>
+              berks install
+              sudo kitchen verify
+            </code></pre>
+          </section>
+
+          <section>
+            <h2>Upload to Chef Server</h2>
+
+            <pre class="frament"><code data-trim data-noescape>
+              berks upload
+            </code></pre>
+          </section>
+
+          <section>
+            <h2>Bootstrap and Correct Node</h2>
+            <p class="fragment">(See Workshop Info: Knife Bootstrap Command)</p>
+          </section>
+        </section>
+
+        <!-- AUTOMATE Section -->
+        <section data-background-image="img/chefconf-2018-background.png" data-background-size="contain">
+          <section>
+            <h1>AUTOMATE</h1>
+          </section>
+          <section>Scheduling Scans in Automate</section>
+          <section>Generating Notifications</section>
+        </section>
+      </div>
+    </div>
+
+    <script src="lib/js/head.min.js"></script>
+    <script src="js/reveal.js"></script>
+
+    <script>
+      // More info about config & dependencies:
+      // - https://github.com/hakimel/reveal.js#configuration
+      // - https://github.com/hakimel/reveal.js#dependencies
+      Reveal.initialize({
+        dependencies: [
+          { src: 'plugin/markdown/marked.js' },
+          { src: 'plugin/markdown/markdown.js' },
+          { src: 'plugin/notes/notes.js', async: true },
+          { src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
+        ],
+
+        backgroundTransition: 'fade',
+        transition: 'fade'
+      });
+    </script>
+  </body>
+</html>
