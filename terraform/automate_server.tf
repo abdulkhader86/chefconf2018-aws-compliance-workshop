@@ -94,13 +94,13 @@ resource "aws_instance" "automate" {
   provisioner "remote-exec" {
     inline = [
       "sudo apt-get update && sudo apt-get install -y unzip ruby",
-      "curl https://packages.chef.io/files/current/automate/latest/chef-automate_linux_amd64.zip | gunzip - > chef-automate",
+      "curl https://packages.chef.io/files/${var.automate_channel}/automate/latest/chef-automate_linux_amd64.zip | gunzip - > chef-automate",
       "sudo sysctl -w vm.max_map_count=262144",
       "sudo sysctl -w vm.dirty_expire_centisecs=20000",
       "sudo chmod +x chef-automate",
       "sudo ./chef-automate init-config --admin-password '${var.automate_admin_password}' --channel '${var.automate_channel}' --file '/tmp/config.toml'",
       "sudo sed -i 's/fqdn = .*/fqdn = \"${aws_instance.automate.public_dns}\"/' /tmp/config.toml",
-      "sudo ./chef-automate deploy /tmp/config.toml && sudo rm /tmp/config.toml",
+      "sudo ./chef-automate deploy /tmp/config.toml --accept-terms-and-mlsa && sudo rm /tmp/config.toml",
       "sudo ./chef-automate license apply ${var.automate_license}",
       "sudo ./chef-automate admin-token > /tmp/automate_api_token 2>/dev/null",
     ]
