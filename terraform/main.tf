@@ -8,7 +8,7 @@ data "aws_ami" "amazon_linux" {
 
   filter {
     name   = "name"
-    values = ["amzn-ami-hvm-*"]
+    values = ["amzn-ami-*"]
   }
 
   owners = ["137112412989"]
