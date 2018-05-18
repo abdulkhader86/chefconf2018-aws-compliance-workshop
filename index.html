@@ -111,8 +111,8 @@
 
           <section class="two-column-with-title">
             <h2>Writing a Simple Wrapper Profile</h2>
-            <p class="fragment">1. Create your profile:</p>
-            <pre class="fragment"><code data-trim data-noescape>
+            <p class="fragment" data-fragment-index="1">1. Create your profile:</p>
+            <pre class="fragment" data-fragment-index="1"><code data-trim data-noescape>
               inspec init profile mycorp_ssh_baseline
               cd mycorp_ssh_baseline
             </code></pre>
@@ -120,28 +120,28 @@
 
           <section>
             <p style="text-align: left">2. Edit your inspec.yml file</p>
-            <pre class="fragment"><code data-trim data-noescape>
+            <pre><code data-trim data-noescape>
               vim inspec.yml
             </code></pre>
-            <p class="fragment" style="text-align: left">...by adding the below:</p>
-            <pre class="fragment"><code data-trim data-noescape style="font-size: .96em">
+            <p class="fragment" style="text-align: left" data-fragment-index="2">...by adding the below:</p>
+            <pre class="fragment" data-fragment-index="2"><code data-trim data-noescape style="font-size: .96em">
               depends:
                 - name: ssh-baseline
                   url: https://github.com/dev-sec/ssh-baseline/archive/master.tar.gz
             </code></pre>
-            <p class="fragment" style="text-align: left">...and changing the title to match the following:</p>
-            <pre class="fragment"><code data-trim data-noescape style="font-size: .96em">
+            <p class="fragment" style="text-align: left" data-fragment-index="3">...and changing the title to match the following:</p>
+            <pre class="fragment" data-fragment-index="3"><code data-trim data-noescape style="font-size: .96em">
               title: MyCorp SSH Baseline
             </code></pre>
           </section>
 
           <section>
             <p style="text-align: left">3. Edit your controls/example.rb to include external controls </p>
-            <pre class="fragment"><code data-trim data-noescape>
+            <pre><code data-trim data-noescape>
               vim controls/example.rb
             </code></pre>
-            <p class="fragment" style="text-align: left">...by adding the below (remove all other lines):</p>
-            <pre class="fragment"><code data-trim data-noescape class="ruby">
+            <p class="fragment" style="text-align: left" data-fragment-index="1">...by adding the below (remove all other lines):</p>
+            <pre class="fragment" data-fragment-index="1"><code data-trim data-noescape class="ruby">
               # encoding: utf-8
 
               include_controls 'ssh-baseline' do
@@ -213,11 +213,11 @@
 
           <section>
             <p style="text-align: left">9. Upload to Automate</p>
-            <p class="fragment" style="text-align: left">...by running the InSpec Login command
-            <p class="fragment">(See Workshop Info: InSpec Login Command)</p>
+            <p class="fragment" style="text-align: left" data-fragment-index="1">...by running the InSpec Login command
+            <p class="fragment" data-fragment-index="1">(See Workshop Info: InSpec Login Command)</p>
             </code></pre>
-            <p class="fragment" style="text-align: left">...then the upload command</p>
-            <pre class="fragment"><code data-trim data-noescape>
+            <p class="fragment" style="text-align: left" data-fragment-index="2">...then the upload command</p>
+            <pre class="fragment" data-fragment-index="2"><code data-trim data-noescape>
               inspec compliance upload .
             </code></pre>
           </section>
@@ -245,35 +245,35 @@
           </section>
 
           <section>
-            <p class="fragment" style="text-align: left">2. Configure your .kitchen.yml (We provided a template)</p>
-            <pre class="fragment"><code data-trim data-noescape>
+            <p style="text-align: left">2. Configure your .kitchen.yml (We provided a template)</p>
+            <pre><code data-trim data-noescape>
               cd mycorp_ssh_hardening
               cp ../example_kitchen.yml .kitchen.yml
             </code></pre>
-            <p class="fragment" style="text-align: left">...and test to make sure you can create an instance</p>
-            <pre class="fragment"><code data-trim data-noescape>
+            <p class="fragment" style="text-align: left" data-fragment-index="1">...and test to make sure you can create an instance</p>
+            <pre class="fragment" data-fragment-index="1"><code data-trim data-noescape>
               sudo kitchen create
             </code></pre>
           </section>
 
           <section>
-            <p class="fragment" style="text-align: left">3. Configure your metadata.rb</p>
-            <pre class="fragment"><code data-trim data-noescape>
+            <p style="text-align: left">3. Configure your metadata.rb</p>
+            <pre><code data-trim data-noescape>
               vim metadata.rb
             </code></pre>
-            <p class="fragment" style="text-align: left">...by adding the following line</p>
-            <pre class="fragment"><code data-trim data-noescape class="ruby">
+            <p class="fragment" style="text-align: left" data-fragment-index="1">...by adding the following line</p>
+            <pre class="fragment" data-fragment-index="1"><code data-trim data-noescape class="ruby">
               depends 'ssh-hardening'
             </code></pre>
           </section>
 
           <section>
             <p style="text-align: left">4. Write tests</p>
-            <pre class="fragment"><code data-trim data-noescape>
+            <pre><code data-trim data-noescape>
               vim test/integration/default/default_test.rb
             </code></pre>
-            <p class="fragment" style="text-align: left">...by adding the following lines (delete all other lines)</p>
-            <pre class="fragment"><code data-trim data-noescape class="ruby">
+            <p class="fragment" style="text-align: left" data-fragment-index="1">...by adding the following lines (delete all other lines)</p>
+            <pre class="fragment" data-fragment-index="1"><code data-trim data-noescape class="ruby">
               # encoding: utf-8
 
               describe sshd_config do
@@ -288,12 +288,18 @@
             </code></pre>
           </section>
           <section>
-            <p style="text-align: left">5. Add recipe code for SSHD banner </p>
-            <pre class="fragment"><code data-trim data-noescape>
+            <p style="text-align: left">5. Verify that tests are failing</p>
+            <pre><code data-trim data-noescape>
+              sudo kitchen verify
+            </code></pre>
+          </section>
+          <section>
+            <p style="text-align: left">6. Add recipe code for SSHD banner </p>
+            <pre><code data-trim data-noescape>
               vim recipes/default.rb
             </code></pre>
-            <p class="fragment" style="text-align: left">...by adding the following lines</p>
-            <pre class="fragment"><code data-trim data-noescape class="ruby">
+            <p class="fragment" style="text-align: left" data-fragment-index="1">...by adding the following lines</p>
+            <pre class="fragment" data-fragment-index="1"><code data-trim data-noescape class="ruby">
               file '/etc/issue.net' do
                 content 'SUPER SECURE BANNER'
               end
@@ -302,8 +308,8 @@
 
           <section>
             <p style="text-align: left">6. Add code from the DevSec ssh-hardening cookbook</p>
-            <p class="fragment" style="text-align: left">...by adding the following lines</p>
-            <pre class="fragment"><code data-trim data-noescape class="ruby" style="font-size: .75em">
+            <p class="fragment" style="text-align: left" data-fragment-index="1">...by adding the following lines</p>
+            <pre class="fragment" data-fragment-index="1"><code data-trim data-noescape class="ruby" style="font-size: .75em">
               node.default['ssh-hardening']['ssh']['server']['banner'] = '/etc/issue.net'
               node.default['ssh-hardening']['ssh']['server']['challenge_response_authentication'] = true
               node.default['ssh-hardening']['ssh']['server']['password_authentication'] = true
@@ -317,21 +323,21 @@
 
             <pre class="fragment"><code data-trim data-noescape>
               berks install
+              sudo kitchen converge
               sudo kitchen verify
             </code></pre>
           </section>
 
           <section>
             <h2>Upload to Chef Server</h2>
-
-            <pre class="frament"><code data-trim data-noescape>
+            <pre><code data-trim data-noescape>
               berks upload
             </code></pre>
           </section>
 
           <section>
             <h2>Bootstrap and Correct Node</h2>
-            <p class="fragment">(See Workshop Info: Knife Bootstrap Command)</p>
+            <p>(See Workshop Info: Knife Bootstrap Command)</p>
           </section>
         </section>
 
