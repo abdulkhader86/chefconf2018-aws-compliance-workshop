@@ -92,7 +92,7 @@ resource "aws_instance" "workstation" {
     inline = [
       "curl https://raw.githubusercontent.com/habitat-sh/habitat/master/components/hab/install.sh | sudo bash",
       "sudo hab pkg install chef/inspec",
-      "echo 'alias inspec=\"hab pkg exec chef/inspec inspec\"' | sudo tee -a /home/${var.participants[count.index]}/.bashrc",
+      "sudo hab pkg binlink chef/inspec inspec",
     ]
   }
 
