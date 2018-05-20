@@ -29,9 +29,9 @@ $linkColor: #42affa;
 $linkColorHover: lighten( $linkColor, 15% );
 $selectionBackgroundColor: lighten( $linkColor, 25% );
 
-$heading1Size: 2.0em;
-$heading2Size: 1.6em;
-$heading3Size: 1.3em;
+$heading1Size: 1.6em;
+$heading2Size: 1.4em;
+$heading3Size: 1.2em;
 $heading4Size: 1.0em;
 
 section.has-light-background {
@@ -76,6 +76,33 @@ section.two-column-with-title {
     }
 
     &#left {
+      text-align: center;
+    }
+
+    &#right {
+      text-align: right;
+    }
+  }
+}
+
+section.three-column-with-title {
+  text-align: left;
+  display: inline-block;
+  div {
+    display: inline-block;
+    vertical-align: middle;
+    width: 32%;
+
+    &#title {
+      width: 100%;
+      text-align: center;
+    }
+
+    &#left {
+      text-align: left;
+    }
+
+    &#center {
       text-align: center;
     }
 

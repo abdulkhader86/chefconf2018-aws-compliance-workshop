@@ -35,9 +35,25 @@ section.two-column-with-title {
     section.two-column-with-title div#left {
       text-align: center; }
     section.two-column-with-title div#right {
+      text-align: right; }
+
+section.three-column-with-title {
+  text-align: left;
+  display: inline-block; }
+  section.three-column-with-title div {
+    display: inline-block;
+    vertical-align: middle;
+    width: 32%; }
+    section.three-column-with-title div#title {
+      width: 100%;
       text-align: center; }
-    section.two-column-with-title ul {
-      float: left; }
+    section.three-column-with-title div#left {
+      text-align: left; }
+    section.three-column-with-title div#center {
+      text-align: center; }
+    section.three-column-with-title div#right {
+      text-align: right; }
+
 /*********************************************
  * GLOBAL STYLES
  *********************************************/
@@ -75,7 +91,6 @@ body {
 .reveal h4,
 .reveal h5,
 .reveal h6 {
-  text-align: center;
   margin: 0 0 20px 0;
   color: #fff;
   font-family: "Source Sans Pro", Helvetica, sans-serif;
@@ -87,16 +102,16 @@ body {
   word-wrap: break-word; }
 
 .reveal h1 {
-  font-size: 1.3em; }
+  font-size: 1.6em; }
 
 .reveal h2 {
-  font-size: 1.0em; }
+  font-size: 1.4em; }
 
 .reveal h3 {
-  font-size: 0.7em; }
+  font-size: 1.2em; }
 
 .reveal h4 {
-  font-size: 0.4em; }
+  font-size: 1em; }
 
 .reveal h1 {
   text-shadow: none; }
@@ -127,7 +142,7 @@ body {
 .reveal ul {
   display: inline-block;
   text-align: left;
-  margin: 0 0 0 2em; }
+  margin: 0 0 0 1em; }
 
 .reveal ol {
   list-style-type: decimal; }

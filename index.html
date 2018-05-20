@@ -29,6 +29,22 @@
         <section data-background-image="img/chefconf-2018-background.png" data-background-size="contain">
           <section>
             <h1>Chef Automate 2 Intro</h1>
+            <aside class="notes">
+              Give a short overview of Automate 2.
+
+              Login to the Automate server and show the UI
+            </aside>
+          </section>
+        </section>
+
+        <section data-background-image="img/chefconf-2018-background.png" data-background-size="contain">
+          <section>
+            <img src="img/dca.png" height="50%" width="50%"/>
+            <aside class="notes">
+               Talk about Detect, Correct, Automate
+
+               https://blog.chef.io/2018/01/04/the-journey-to-continuous-automation/
+            </aside>
           </section>
         </section>
 
@@ -38,20 +54,23 @@
             <h1>DETECT</h1>
           </section>
 
-          <section class="two-column-with-title">
+          <section class="three-column-with-title">
             <div id="title">
               <h2>Automate Cloud Integrations</h2>
             </div>
             <div id="left">
               <a href="https://aws.amazon.com/"><img alt="AWS Logo" data-src="img/aws_logo.png"/></a>
             </div>
-            <div id="right">
+            <div id="center">
               <a href="https://azure.microsoft.com"><img alt="Azure Logo" src="img/azure_logo.png"/></a>
+            </div>
+            <div id="right">
+              <a href="https://cloud.google.com/"><img alt="GCP Logo" data-src="img/gcp_logo.png"/></a>
             </div>
           </section>
 
           <section align="left">
-            <h2>Node Managers</h2>
+            <h2 align="center">Node Managers</h2>
               <p class="fragment">API Node Manager</p>
               <ul>
                 <li class="fragment">Platform level scanning</li>
@@ -78,7 +97,7 @@
             <p>Scanning an AWS region</p>
             <ol style="text-align: left">
               <li>Add the node manager</li>
-              <li>Download CIS AWS InSpec profile</li>
+              <li>Review/Download CIS AWS InSpec profile</li>
               <li>Add a Scan Job</li>
             </ol>
           </section>
@@ -94,7 +113,7 @@
             <p>Scanning an EC2 instance</p>
             <ol style="text-align: left">
               <li>Add the node manager</li>
-              <li>Download the DevSec SSH Baseline profile</li>
+              <li>Review/Download the DevSec SSH Baseline profile</li>
               <li>Add a Scan Job</li>
             </ol>
           </section>
@@ -102,6 +121,25 @@
           <section>
             <h1>How can I correct these findings!?!</h1>
             <p class="fragment">...with Chef!!!</p>
+          </section>
+
+          <section>
+            <h2>The Plan</h2>
+            <p class="fragment" data-fragment-index="1" align="left">Detect:</p>
+            <ol style="display: block; margin: 0 0 0 2em" class="fragment" data-fragment-index="1">
+              <li>Create a CIS Wrapper InSpec profile</li>
+              <li>Use this profile to find non-compliant nodes</li>
+            </ol>
+            <p class="fragment" data-fragment-index="2" align="left">Correct:</p>
+            <ol style="display: block; margin: 0 0 0 2em" class="fragment" data-fragment-index="2">
+              <li>Create a cookbook to make those nodes compliance</li>
+              <li>Deploy that cookbook</li>
+            </ol>
+            <p class="fragment" data-fragment-index="3" align="left">Automate:</p>
+            <ol style="display: block; margin: 0 0 0 2em" class="fragment" data-fragment-index="3">
+              <li>Create scheduled scans</li>
+              <li>Create notifications</li>
+            </ol>
           </section>
 
           <section>
@@ -136,7 +174,7 @@
           </section>
 
           <section>
-            <p style="text-align: left">3. Edit your controls/example.rb to include external controls </p>
+            <p style="text-align: left">3. Edit your controls/example.rb to include external controls</p>
             <pre><code data-trim data-noescape>
               vim controls/example.rb
             </code></pre>
